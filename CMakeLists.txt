@@ -1,0 +1,34 @@
+CMAKE_MINIMUM_REQUIRED(VERSION 3.5)
+PROJECT(radix_tree)
+
+SET(CMAKE_BUILD_TYPE Release)
+SET(CMAKE_CXX_STANDARD 14)
+SET(CMAKE_CXX_EXTENSIONS OFF)
+SET(CMAKE_BUILD_TYPE Release)
+
+OPTION(DEFINE_DEBUG_COMPILE "Build the project using debug flags (valgrind & gdb)" OFF)
+IF(DEFINE_DEBUG_COMPILE)
+  MESSAGE("Adding Compile Debug flags...")
+  SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Werror -Wextra -g3 -O0")
+  SET(CMAKE_BUILD_TYPE Debug)
+ELSE()
+  SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Werror -Wextra")
+ENDIF(DEFINE_DEBUG_COMPILE)
+
+OPTION(DEFINE_DEBUG_RADIX "Build the project using debugging code" OFF)
+IF(DEFINE_DEBUG_RADIX)
+  MESSAGE("Adding Debug flag...")
+  ADD_DEFINITIONS(-DDEBUG_RADIX)
+  SET(CMAKE_BUILD_TYPE Debug)
+ENDIF(DEFINE_DEBUG_RADIX)
+
+SET(SOURCE_FILE
+    src/Main.cpp
+    )
+
+INCLUDE_DIRECTORIES(./include)
+
+MESSAGE("Build type is " ${CMAKE_BUILD_TYPE})
+ADD_EXECUTABLE(radix_tree ${SOURCE_FILE})
+
+TARGET_LINK_LIBRARIES(radix_tree pthread)
